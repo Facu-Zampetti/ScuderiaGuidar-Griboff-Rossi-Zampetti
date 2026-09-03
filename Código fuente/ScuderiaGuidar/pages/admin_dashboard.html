@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Admin | ScuderiaGuidar</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary:   '#1A1A1A',
+                        secondary: '#F7C52D',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="bg-gray-50 font-inter min-h-screen flex flex-col">
+
+    <!-- Header dinámico (mismo que el resto del panel) -->
+    <header id="site-header" class="bg-white shadow-subtle sticky top-0 z-50"></header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+
+        <!-- Título / breadcrumb -->
+        <div class="mb-8">
+            <p class="text-sm text-gray-500 mb-1">Administración &rsaquo; Dashboard</p>
+            <h1 class="text-3xl font-bold text-gray-900">Dashboard de Estadísticas</h1>
+            <p class="text-gray-500 mt-1">Resumen general del sistema de alquiler de vehículos.</p>
+        </div>
+
+        <!-- Estado de carga -->
+        <div id="loader" class="flex flex-col items-center justify-center py-20">
+            <svg class="animate-spin h-10 w-10 text-yellow-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="text-gray-500">Cargando estadísticas...</p>
+        </div>
+
+        <!-- Mensaje de error -->
+        <div id="error-state" class="hidden bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+            <p class="text-red-700 font-medium" id="error-msg">Error al cargar los datos.</p>
+        </div>
+
+        <!-- Contenido del dashboard (oculto hasta que carguen los datos) -->
+        <div id="dashboard-content" class="hidden">
+
+            <!-- ── 4 Tarjetas numéricas ──────────────────────────────────── -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+
+                <!-- Tarjeta 1: Total reservas -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex items-center gap-5">
+                    <div class="flex-shrink-0 w-14 h-14 rounded-full bg-yellow-100 flex items-center justify-center">
+                        <svg class="w-7 h-7 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Total Reservas</p>
+                        <p id="card-reservas" class="text-3xl font-bold text-gray-900 mt-1">–</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2: Ingresos -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex items-center gap-5">
+                    <div class="flex-shrink-0 w-14 h-14 rounded-full bg-green-100 flex items-center justify-center">
+                        <svg class="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-2.21 0-4 1.343-4 3s1.79 3 4 3 4 1.343 4 3-1.79 3-4 3m0-18v2m0 16v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Ingresos Totales</p>
+                        <p id="card-ingresos" class="text-3xl font-bold text-gray-900 mt-1">–</p>
+                        <p class="text-xs text-gray-400 mt-0.5">Reservas confirmadas, en curso y finalizadas</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3: Clientes -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex items-center gap-5">
+                    <div class="flex-shrink-0 w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center">
+                        <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500">Clientes Registrados</p>
+                        <p id="card-clientes" class="text-3xl font-bold text-gray-900 mt-1">–</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 4: Auto más reservado -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex items-center gap-5">
+                    <div class="flex-shrink-0 w-14 h-14 rounded-full bg-purple-100 flex items-center justify-center">
+                        <svg class="w-7 h-7 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 9-14 9V3z"/>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-sm font-medium text-gray-500">Auto Más Reservado</p>
+                        <p id="card-auto-cantidad" class="text-3xl font-bold text-gray-900 mt-1">–</p>
+                        <p id="card-auto-nombre" class="text-xs text-gray-400 mt-0.5 truncate">–</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ── 4 Gráficos ────────────────────────────────────────────── -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <!-- Gráfico 1: Reservas por estado (barras) -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                    <h2 class="text-base font-semibold text-gray-800 mb-1">Reservas por Estado</h2>
+                    <p class="text-xs text-gray-500 mb-5">Cantidad de reservas agrupadas por estado actual.</p>
+                    <div class="relative h-64">
+                        <canvas id="chartEstados"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico 2: Autos por tipo (torta) -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                    <h2 class="text-base font-semibold text-gray-800 mb-1">Distribución de Flota por Tipo</h2>
+                    <p class="text-xs text-gray-500 mb-5">Porcentaje de vehículos por categoría.</p>
+                    <div class="relative h-64">
+                        <canvas id="chartTipos"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico 3: Ingresos por fecha (líneas) -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                    <h2 class="text-base font-semibold text-gray-800 mb-1">Ingresos por Fecha de Operación</h2>
+                    <p class="text-xs text-gray-500 mb-5">Suma de ingresos diarios (reservas válidas, últimas 30 fechas).</p>
+                    <div class="relative h-64">
+                        <canvas id="chartIngresos"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico 4: Top 5 autos (barras horizontales) -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                    <h2 class="text-base font-semibold text-gray-800 mb-1">Top 5 Autos Más Reservados</h2>
+                    <p class="text-xs text-gray-500 mb-5">Vehículos con mayor número de reservas registradas.</p>
+                    <div class="relative h-64">
+                        <canvas id="chartTopAutos"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- /dashboard-content -->
+
+    </main>
+
+    <footer class="bg-gray-900 text-white py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-400">&copy; 2025 ScuderiaGuidar. Panel de Administrador.</p>
+        </div>
+    </footer>
+
+    <script src="../public/session.js"></script>
+    <script src="../public/admin_dashboard.js"></script>
+
+</body>
+</html>

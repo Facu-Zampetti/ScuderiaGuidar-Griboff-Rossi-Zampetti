@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verificación de Cuenta - ScuderiaGuidar</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+<body class="bg-surface font-inter min-h-screen flex flex-col">
+    <header id="site-header" class="bg-white shadow-subtle sticky top-0 z-50"></header>
+
+    <main class="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full">
+            <div class="card-elevated p-8 space-y-6">
+                <div class="text-center">
+                    <h1 class="text-2xl font-bold text-primary mb-2">Verificación de Cuenta</h1>
+                    <p class="text-text-secondary text-sm" id="verify-subtitle">Estamos validando tu enlace...</p>
+                </div>
+
+                <div id="verify-loading" class="text-center py-2">
+                    <svg class="animate-spin h-8 w-8 text-secondary mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                    </svg>
+                </div>
+
+                <div id="verify-message" class="hidden p-3 rounded text-sm font-semibold text-center"></div>
+
+                <div id="resend-block" class="hidden space-y-3">
+                    <label for="resend-email" class="block text-sm font-semibold text-primary">Reenviar a este email</label>
+                    <input id="resend-email" type="email" class="form-input w-full" placeholder="tu@email.com" />
+                    <button id="resend-btn" type="button" class="btn-primary w-full text-center">Reenviar email de verificación</button>
+                </div>
+
+                <a href="login.html" class="inline-flex justify-center w-full text-sm font-medium text-secondary hover:text-accent transition-quick">Ir al inicio de sesión</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-400">© 2025 ScuderiaGuidar. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="../public/verify_email.js"></script>
+    <script src="../public/session.js"></script>
+</body>
+</html>

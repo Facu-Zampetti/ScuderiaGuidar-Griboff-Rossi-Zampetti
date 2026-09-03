@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mis Reservas - ScuderiaGuidar</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <script src="https://cdn.tailwindcss.com"></script> <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-gray-50 font-inter min-h-screen flex flex-col">
+
+    <header id="site-header" class="bg-white shadow-subtle sticky top-0 z-50"></header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Mis Reservas</h1>
+                <p class="text-gray-500 mt-1">Gestiona tus viajes pasados y futuros</p>
+            </div>
+            <a href="vehicle_catalog.html" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none transition-colors">
+                + Nueva Reserva
+            </a>
+        </div>
+
+        <div id="loader" class="text-center py-12">
+            <svg class="animate-spin h-8 w-8 text-yellow-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="mt-2 text-gray-500">Cargando tus reservas...</p>
+        </div>
+
+        <div id="empty-state" class="hidden text-center py-16 bg-white rounded-lg shadow-sm border border-gray-100">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">No tienes reservas</h3>
+            <p class="mt-1 text-sm text-gray-500">¡Es hora de planear tu próxima aventura!</p>
+            <div class="mt-6">
+                <a href="vehicle_catalog.html" class="text-yellow-600 hover:text-yellow-500 font-medium">
+                    Ver catálogo de vehículos &rarr;
+                </a>
+            </div>
+        </div>
+
+        <div id="reservations-grid" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 hidden">
+            </div>
+
+    </main>
+
+    <footer class="bg-gray-900 text-white py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-400">© 2025 ScuderiaGuidar. Panel de Cliente.</p>
+        </div>
+    </footer>
+
+    <script src="../public/session.js"></script>
+    <script src="../public/reservation_gestion.js"></script>
+</body>
+</html>

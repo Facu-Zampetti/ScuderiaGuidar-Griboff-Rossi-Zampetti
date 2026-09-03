@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catálogo de Vehículos - FleetRental Pro</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+
+</head>
+<body class="bg-background font-inter">
+    <!-- Navigation Header -->
+        <header id="site-header" class="bg-white shadow-subtle sticky top-0 z-50"></header>
+
+
+   
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Filters Sidebar -->
+            <aside class="lg:w-80 flex-shrink-0">
+            <div class="card-elevated p-6 sticky top-24">
+                <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-primary">Filtros</h2>
+                <button id="filter-reset" class="text-text-secondary hover:text-primary transition-quick text-sm flex items-center">
+                    <svg class="inline h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Limpiar
+                </button>
+                </div>
+
+                <!-- Vehicle Type Filter -->
+                <div class="mb-8">
+                <h3 class="text-lg font-semibold text-primary mb-4">Tipo de Vehículo</h3>
+                <div id="filter-types" class="space-y-3">
+                </div>
+                </div>
+
+                <div class="mb-8">
+                <h3 class="text-lg font-semibold text-primary mb-4">Sucursal</h3>
+                <select id="filter-branch" class="form-input w-full text-sm cursor-pointer">
+                    <option value="">Todas las sucursales</option>
+                </select>
+                </div>
+
+                <!-- Price Range Filter -->
+                <div class="mb-8">
+                <h3 class="text-lg font-semibold text-primary mb-4">Rango de Precio (por día)</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-4">
+                    <input id="price-min" type="number" placeholder="Min" class="form-input text-sm border border-gray-300 rounded-lg px-2 py-1 w-24" value="10" />
+                    <span class="text-text-secondary">-</span>
+                    <input id="price-max" type="number" placeholder="Max" class="form-input text-sm border border-gray-300 rounded-lg px-2 py-1 w-24" value="1000" />
+                    </div>
+                    
+            </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="flex-1">
+                <!-- Results Header -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+                    <div>
+                        <h1 class="text-3xl font-bold text-primary mb-2">Catálogo de Vehículos</h1>
+                    </div>
+                    
+                        <!-- Sort Dropdown -->
+                    <div class="flex items-center space-x-4">
+                        <label for="sort-select" class="text-sm font-medium text-text-secondary">Ordenar por:</label>
+                        <select id="sort-select" class="form-input text-sm min-w-48 cursor-pointer">
+                            <option value="alpha">Orden: Alfabético (A-Z)</option>
+                            <option value="price_asc">Precio: Menor a Mayor</option>
+                            <option value="price_desc">Precio: Mayor a Menor</option>
+                        </select>
+                    </div>
+                </div>
+
+<!-- CONTENEDOR DE VEHÍCULOS -->
+<section class="container mx-auto px-4 py-8">
+  
+
+  <!-- grid donde inyectaremos las cards -->
+  <div id="vehicle-grid" class="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3"></div>
+
+  <!-- mensaje cuando no haya vehículos -->
+  <div id="no-results" class="hidden text-center text-gray-500 mt-8">
+    No se encontraron vehículos.
+  </div>
+</section>
+
+                <!-- Comparison Panel (Hidden by default) -->
+                <div class="card-elevated p-6 mb-8 hidden" id="comparison-panel">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-primary">Comparar Vehículos</h3>
+                        <button class="text-text-secondary hover:text-primary transition-quick">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- Comparison slots will be populated dynamically -->
+                        <div class="text-center p-8 border-2 border-dashed border-gray-300 rounded-lg">
+                            <svg class="h-12 w-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                            <p class="text-text-secondary">Selecciona vehículos para comparar</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <button id="ai-assistant-toggle" class="ai-assistant-toggle" type="button" aria-label="Abrir asistente de vehiculos" aria-expanded="false">
+        <span aria-hidden="true">&#10022;</span>
+    </button>
+
+    <section id="ai-assistant-panel" class="ai-assistant-panel hidden" aria-label="Asistente IA para elegir vehiculo">
+        <div class="ai-assistant-header">
+            <div>
+                <p class="ai-assistant-kicker">Asistente IA</p>
+                <h2>Tu vehiculo ideal</h2>
+            </div>
+            <button id="ai-assistant-close" class="ai-assistant-close" type="button" aria-label="Cerrar asistente">&times;</button>
+        </div>
+
+        <div id="ai-assistant-messages" class="ai-assistant-messages" aria-live="polite">
+            <div class="ai-message ai-message-bot">¿Buscamos tu vehiculo ideal?</div>
+        </div>
+
+        <form id="ai-assistant-form" class="ai-assistant-form">
+            <fieldset class="ai-preferences">
+                <legend>Contame sobre tu viaje</legend>
+                <label class="ai-check-row"><input type="number" id="ai-days" min="1" max="90" value="3" required><span>Dias de alquiler</span></label>
+                <label class="ai-check-row"><input type="number" id="ai-passengers" min="1" max="12" value="2" required><span>Pasajeros</span></label>
+                <label class="ai-check-row"><input type="number" id="ai-luggage-quantity" min="0" max="20" value="1" required><span>Equipaje</span></label>
+
+                <label class="ai-select-row"><span>Tamano de equipaje</span>
+                    <select id="ai-luggage-size">
+                        <option value="pequeno">Pequeno</option>
+                        <option value="mediano" selected>Mediano</option>
+                        <option value="grande">Grande</option>
+                    </select>
+                </label>
+                <label class="ai-select-row"><span>Estilo de viaje</span>
+                    <select id="ai-trip-style">
+                        <option value="ciudad">Ciudad</option>
+                        <option value="ruta">Ruta</option>
+                        <option value="familiar">Familiar</option>
+                        <option value="aventura">Aventura / Off-road</option>
+                    </select>
+                </label>
+                <label class="ai-check-row"><input type="number" id="ai-kilometers" min="0" max="10000" value="100" required><span>Kilometros aproximados</span></label>
+                <label class="ai-select-row"><span>Presupuesto</span>
+                    <select id="ai-budget-mode">
+                        <option value="total" selected>Total</option>
+                        <option value="diario">Diario</option>
+                    </select>
+                </label>
+                <label class="ai-check-row"><input type="number" id="ai-budget-value" min="1" step="0.01" placeholder="Monto" required><span>Monto</span></label>
+                <label class="ai-check-row"><input type="checkbox" id="ai-extra-automatic"><span>Transmision automatica</span></label>
+                <label class="ai-check-row"><input type="checkbox" id="ai-extra-ac" checked><span>Aire acondicionado</span></label>
+            </fieldset>
+
+            <label class="ai-message-input" for="ai-free-message">
+                <span class="sr-only">Mensaje adicional para la IA</span>
+                <input id="ai-free-message" type="text" maxlength="800" placeholder="Ej: viajo con dos chicos y quiero baul amplio">
+            </label>
+            <button id="ai-assistant-submit" class="ai-assistant-submit" type="submit">Buscar opciones</button>
+        </form>
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2">
+                <!-- Company Info -->
+                <div>
+                    <div class="flex items-center mb-4">
+                        <svg class="h-5 w-5" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+                        <!-- Cuadro amarillo principal -->
+                        <rect x="0" y="0" width="100" height="100" fill="#F7C52D"/>
+                        <!-- Curva tipo guardarraíl -->
+                        <path d="M 0 70 Q 40 40, 100 0 L 100 30 Q 55 60, 0 90 Z" fill="#000"/>
+
+                         <!-- Barras negras (crecientes) -->
+                        <rect x="10" y="65" width="10" height="25" fill="#000"/>
+                        <rect x="30" y="55" width="10" height="35" fill="#000"/>
+                        <rect x="50" y="45" width="10" height="45" fill="#000"/>
+                    </svg>
+                        <span class="ml-2 text-lg font-bold">ScuderiaGuidar</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Tu socio confiable para alquiler de vehículos premium en Argentina.
+                    </p>
+                </div>
+
+                
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-white">Contacto</h3>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400">
+                            <svg class="inline h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                            </svg>
+                            +54 351 400-1297
+                        </li>
+                        <li class="text-gray-400">
+                            <svg class="inline h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                            </svg>
+                            info@scuderiaguidar.com.ar
+                        </li>
+                        <li class="text-gray-400">
+                            <svg class="inline h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                            </svg>
+                            Cordoba, Argentina
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400">
+                    © 2025 ScuderiaGuidar. Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+<script src="../public/app.js" defer></script>
+<script src="../public/vehicle-recommender.js" defer></script>
+<script src="../public/session.js"></script>
+
+
+</body>
+</html>

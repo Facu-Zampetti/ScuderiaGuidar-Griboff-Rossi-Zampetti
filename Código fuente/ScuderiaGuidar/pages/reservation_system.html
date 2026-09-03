@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservar Vehículo - ScuderiaGuidar</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+<body class="bg-background font-inter">
+
+    <!-- Header dinamico -->
+    <header id="site-header" class="bg-white shadow-subtle sticky top-0 z-50"></header>
+
+    <!-- Contenedor Principal -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid lg:grid-cols-3 gap-8 items-start">
+
+            <section class="lg:col-span-2">
+                <form id="reservation-form">
+                    <div class="card-elevated p-8 space-y-8">
+                        
+                        <!-- Sección Fechas -->
+                        <div>
+                            <h2 class="text-2xl font-bold text-primary mb-6">Completa tu Reserva</h2>
+                            <h3 class="text-lg font-semibold text-primary mb-4">1. Selecciona las Fechas</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <label for="pickup-date" class="block text-sm font-semibold text-primary">Fecha de Retiro</label>
+                                    <input type="date" id="pickup-date" class="form-input w-full" required />
+                                </div>
+                                <div class="space-y-2">
+                                    <label for="return-date" class="block text-sm font-semibold text-primary">Fecha de Devolución</label>
+                                    <input type="date" id="return-date" class="form-input w-full" required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-primary mb-4">2. Elige Sucursales</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <label for="pickup-branch" class="block text-sm font-semibold text-primary">Sucursal de Retiro</label>
+                                    <select id="pickup-branch" class="form-input w-full" required>
+                                        <option value="">Cargando sucursales...</option>
+                                    </select>
+                                </div>
+                                <div class="space-y-2">
+                                    <label for="return-branch" class="block text-sm font-semibold text-primary">Sucursal de Devolución</label>
+                                    <select id="return-branch" class="form-input w-full" required>
+                                        <option value="">Cargando sucursales...</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <p class="text-xs text-text-secondary mt-3">La disponibilidad del vehículo se valida según la sucursal de retiro seleccionada.</p>
+
+                            <div class="mt-5 card-elevated overflow-hidden border border-gray-100">
+                                <div id="reservation-branches-map" class="w-full map-container map-container-reservation"></div>
+                            </div>
+                            <p id="reservation-map-error" class="hidden text-sm text-red-600 mt-2"></p>
+                        </div>
+
+                        <!-- Sección Resumen de Costos -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-primary mb-4">3. Resumen de Costos</h3>
+                            <div class="bg-surface p-6 rounded-lg space-y-4 border">
+                                <div class="flex justify-between text-text-secondary">
+                                    <span>Precio por día:</span>
+                                    <span id="summary-price-day" class="font-medium text-primary">-</span>
+                                </div>
+                                <div class="flex justify-between text-text-secondary">
+                                    <span>Días totales:</span>
+                                    <span id="summary-days" class="font-medium text-primary">-</span>
+                                </div>
+                                <div class="flex justify-between text-lg font-bold text-primary pt-4 border-t border-gray-200">
+                                    <span>Total a Pagar:</span>
+                                    <span id="summary-total" class="text-2xl">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botón Continuar -->
+                        <div class="pt-6 border-t border-gray-100">
+                            <button type="submit" id="submit-reservation" class="btn-primary w-full text-center text-lg py-3">
+                                Confirmar y Reservar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+            <aside class="lg:col-span-1 space-y-6 sticky top-24">
+                
+                <!--  Barra de Despliegue  -->
+                <div class="card-elevated p-6">
+                    <label for="vehicle-select" class="block text-lg font-semibold text-primary mb-4">
+                        Elige un Vehículo
+                    </label>
+                    <select id="vehicle-select" class="form-input w-full cursor-pointer">
+                        <option value="">Cargando flota...</option>
+                    </select>
+                    <p id="branch-vehicle-message" class="hidden mt-3 text-sm text-red-600"></p>
+                </div>
+
+                <!--  Tarjeta de Información  -->
+                <div id="vehicle-card" class="card-elevated overflow-hidden group transition-all hidden"> 
+                    <div class="relative h-48 w-full overflow-hidden">
+                        <img id="vehicle-img" src="" alt="Auto seleccionado"
+                             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                    </div>
+                    
+                    <div class="p-4">
+                        <h3 id="vehicle-name" class="text-lg font-semibold text-primary">...</h3>
+                        <p id="vehicle-info" class="text-text-secondary text-sm mb-4">...</p>
+                        <p id="vehicle-patent" class="text-xs text-text-secondary">...</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400">© 2025 ScuderiaGuidar. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="../public/session.js"></script>
+    <script src="../public/maps-loader.js"></script>
+    <script src="../public/reservation.js" defer></script>
+
+</body>
+</html>

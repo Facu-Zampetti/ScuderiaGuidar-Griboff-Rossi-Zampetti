@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Primary Colors */
+  --color-primary: #1A1A1A; /* gray-900 */
+  --color-secondary: #F7C52D; /* yellow-400 */
+  --color-accent: #FFD700; /* yellow-300 */
+  
+  /* Background Colors */
+  --color-background: #FFFFFF; /* white */
+  --color-surface: #F8F9FA; /* gray-50 */
+  
+  /* Text Colors */
+  --color-text-primary: #2D2D2D; /* gray-800 */
+  --color-text-secondary: #6B7280; /* gray-500 */
+  
+  /* Status Colors */
+  --color-success: #10B981; /* emerald-500 */
+  --color-warning: #F59E0B; /* amber-500 */
+  --color-error: #EF4444; /* red-500 */
+  
+  /* Border Colors */
+  --color-border: #E5E7EB; /* gray-200 */
+  --color-border-accent: #F7C52D; /* yellow-400 */
+  
+  /* Shadow Colors */
+  --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-modal: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-secondary text-primary font-semibold px-6 py-3 rounded-lg transition-all duration-300 ease-in-out hover:bg-accent focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2;
+  }
+  
+  .btn-secondary {
+    @apply bg-primary text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 ease-in-out hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+  }
+  
+  .card-elevated {
+    @apply bg-white rounded-lg shadow-subtle border border-gray-200 transition-shadow duration-300 ease-in-out hover:shadow-modal;
+  }
+  
+  .form-input {
+    @apply w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-secondary focus:ring-2 focus:ring-secondary focus:ring-opacity-20 transition-all duration-200 ease-in-out;
+  }
+  
+  .text-accent-mono {
+    font-family: 'JetBrains Mono', monospace;
+    @apply text-sm font-normal;
+  }
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: all 300ms ease-in-out;
+  }
+  
+  .transition-quick {
+    transition: all 200ms ease-in-out;
+  }
+  
+  .transition-modal {
+    transition: all 400ms ease-in-out;
+  }
+}

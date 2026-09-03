@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="esp">
+<head>
+<meta charset ="UTF-8"/>
+<meta name="viewport" content=""width=device-width, initial-scale="1.0" />
+<title>ScuderiaGuidar - Alquiler de Vehículos Confiables</title>
+<link rel="stylesheet" href="css/main.css" />
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #8a8a8a 0%, #000000);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .redirect-container{
+        text-align: center;
+        background: rgba(247, 197, 45, 0.95);
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        width: 90%;
+    }
+
+    .logo{
+        font-size:2.5em;
+        font-weight: bold;
+        color: #000000;
+        margin-bottom: 20px;
+    }
+    .loading-spinner{
+        width: 50px;
+        height: 50px;
+        border: 4px solid #e2e8f0;
+        border-top: 4px solid #F7C52D;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+    }
+    @keyframes spin{
+        0%{transform:rotate(0deg);}
+        100%{transform:rotate(360deg);}
+    }
+    .redirect-message{
+        color: #000000;
+        font-size: 1.1em;
+        margin-bottom: 20px;
+    }
+    .manual-link{
+        display: inline-block;
+        background: #000000;
+        color:rgba(247, 197, 45, 0.95);
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+    }
+    .manual-link:hover{
+        background: #000000;
+    }
+</style>
+</head>
+<body>
+    <div class="redirect-container">
+        <div class ="logo">ScuderiaGuidar</div>
+        <div class="loading-spinner"></div>
+        <div class="redirect-message">Redirigiendo a la Pagina Principal...</div>
+        <a href="pages/homepage.html" class="manual-link">Ir a pagina principal</a>
+    </div>
+    <script>
+        setTimeout(function(){
+            window.location.href='pages/homepage.html';
+        },2000);
+        window.addEventListener('load', function(){
+            setTimeout(function(){
+                if(window.location.pathname.endsWith('index.html')||window.location.pathname==='/'){
+                    window.location.href='pages/homepage.html';
+                }
+              },2500)
+        });
+    </script>
+    <script id="dhws-dataInjector" src="/public/dhws-data-injector.js"></script>
+</body>
+</html>

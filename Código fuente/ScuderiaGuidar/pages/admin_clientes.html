@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Usuarios - Admin</title>
+
+    <link rel="stylesheet" href="../css/main.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body class="bg-gray-50 font-inter min-h-screen flex flex-col">
+
+    <!-- HEADER -->
+    <header id="site-header" class="bg-white shadow-subtle sticky top-0 z-50"></header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Cuentas del Sistema</h1>
+                <p class="text-gray-500 mt-1">Gestiona la información de los usuarios</p>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-300 text-sm">
+                    
+                    <!-- TABLE HEADER -->
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">ID</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Rol</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase min-w-[120px]">Nombre</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase min-w-[120px]">Apellido</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase min-w-[110px]">DNI</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-600 uppercase min-w-[180px]">Mail</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-600 uppercase min-w-[140px]">Teléfono</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-600 uppercase min-w-[130px]">Nacimiento</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase min-w-[160px]">Licencia</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-600 uppercase min-w-[120px]">Dirección</th>
+                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-600 uppercase min-w-[140px]">Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <!-- TABLE BODY -->
+                    <tbody id="clients-table-body" class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td colspan="11" class="text-center py-10 text-gray-500">
+                                Cargando datos del servidor...
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MODAL: EDITAR / MODIFICAR CLIENTE -->
+    <div id="clientModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-black bg-opacity-40 transition-opacity" onclick="closeModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl w-full">
+                <form id="clientForm" class="p-6 space-y-4">
+                    <h3 class="text-lg font-bold text-gray-900" id="modal-title">Modificar Cliente</h3>
+                    <input type="hidden" id="clientId">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="clientName" class="block text-sm font-medium text-gray-700">Nombre</label>
+                            <input id="clientName" type="text" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" />
+                        </div>
+                        <div>
+                            <label for="clientLastName" class="block text-sm font-medium text-gray-700">Apellido</label>
+                            <input id="clientLastName" type="text" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" />
+                        </div>
+
+                        <div>
+                            <label for="clientDNI" class="block text-sm font-medium text-gray-700">DNI</label>
+                            <input id="clientDNI" type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" />
+                        </div>
+                        <div>
+                            <label for="clientMail" class="block text-sm font-medium text-gray-700">Mail</label>
+                            <input id="clientMail" type="email" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" />
+                        </div>
+
+                        <div>
+                            <label for="clientPhone" class="block text-sm font-medium text-gray-700">Teléfono</label>
+                            <input id="clientPhone" type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" />
+                        </div>
+                        <div>
+                            <label for="clientBirth" class="block text-sm font-medium text-gray-700">Nacimiento</label>
+                            <input id="clientBirth" type="date" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" />
+                        </div>
+
+                        <div>
+                            <label for="clientLicense" class="block text-sm font-medium text-gray-700">Licencia (0/1)</label>
+                            <select id="clientLicense" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2">
+                                <option value="0">No</option>
+                                <option value="1">Sí</option>
+                            </select>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="clientAddress" class="block text-sm font-medium text-gray-700">Dirección</label>
+                            <input id="clientAddress" type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" />
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex justify-end gap-3">
+                        <button type="button" onclick="closeModal()" class="inline-flex justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="inline-flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm bg-blue-600 text-sm font-medium text-white hover:bg-blue-700">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- HELPERS: abrir / cerrar modal (necesarios para el JS) -->
+    <script>
+        function openModal(isEdit = false) {
+            const modal = document.getElementById('clientModal');
+            modal.classList.remove('hidden');
+            // opcional: foco en el primer campo
+            setTimeout(() => {
+                const el = document.getElementById('clientName');
+                if (el) el.focus();
+            }, 100);
+        }
+        function closeModal() {
+            const modal = document.getElementById('clientModal');
+            modal.classList.add('hidden');
+            const form = document.getElementById('clientForm');
+            if (form) form.reset();
+            // limpiar id
+            const id = document.getElementById('clientId');
+            if (id) id.value = '';
+        }
+    </script>
+
+    <!-- SCRIPTS -->
+    <script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+    <script src="../public/session.js"></script>
+    <script src="../public/admin_clientes.js" defer></script>
+
+</body>
+</html>
