@@ -35,5 +35,4 @@ Las consignas incluidas en esta carpeta fueron utilizadas como referencia para o
 
 **Proyecto:** ScuderiaGuidar  
 **Asignatura:** Laboratorio III  
-**Profesor:** Gustavo Adolfo Funes  
 **Carrera:** Ingeniería Informática
